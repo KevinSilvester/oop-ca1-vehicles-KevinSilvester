@@ -25,6 +25,12 @@ public class PassengerStore {
         }
     }
 
+    public void addPassenger(String name, String email, String phone,
+                             double latitude, double longitude) {
+        Passenger newPassenger = new Passenger(name, email,phone, latitude, longitude);
+        this.passengerList.add(newPassenger);
+    }
+
     /**
      * Read Passenger records from a text file and create and add Passenger
      * objects to the PassengerStore.

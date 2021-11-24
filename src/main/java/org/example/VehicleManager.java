@@ -18,6 +18,15 @@ public class VehicleManager {
             System.out.println(v.toString());
     }
 
+    public Vehicle findByRegistration(String registration) {
+        if (registration == null) return null;
+        Vehicle v = null;
+        for (Vehicle i : vehicleList)
+            if (i.getRegistration().equals(registration))
+                v = i;
+        return v;
+    }
+
     public void loadVehiclesFromFile(String fileName) {
         try {
             Scanner sc = new Scanner(new File(fileName));
