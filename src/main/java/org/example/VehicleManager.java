@@ -50,7 +50,7 @@ public class VehicleManager {
                 double longitude = sc.nextDouble();
 
                 if (type.equalsIgnoreCase("Van") ||
-                        type.equalsIgnoreCase("Truck")) {
+                    type.equalsIgnoreCase("Truck")) {
                     double loadSpace = sc.nextDouble();
                     vehicleList.add(new Van(id, type, make, model, milesPerKwH,
                             registration, costPerMile,
@@ -59,7 +59,7 @@ public class VehicleManager {
                             loadSpace));
                 }
                 else if (type.equalsIgnoreCase("Car") ||
-                        type.equalsIgnoreCase("4x4")) {
+                         type.equalsIgnoreCase("4x4")) {
                     int seats = sc.nextInt();
                     vehicleList.add(new Car(id, type, make, model, milesPerKwH,
                             registration, costPerMile,
