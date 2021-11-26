@@ -13,20 +13,6 @@ public class VehicleManager {
         loadVehiclesFromFile(fileName);
     }
 
-    public void displayAllVehicles() {
-        for (Vehicle v : vehicleList)
-            System.out.println(v.toString());
-    }
-
-    public Vehicle findByRegistration(String registration) {
-        if (registration == null) return null;
-        Vehicle v = null;
-        for (Vehicle i : vehicleList)
-            if (i.getRegistration().equals(registration))
-                v = i;
-        return v;
-    }
-
     public void loadVehiclesFromFile(String fileName) {
         try {
             Scanner sc = new Scanner(new File(fileName));
@@ -49,8 +35,10 @@ public class VehicleManager {
                 double latitude = sc.nextDouble();  // Depot GPS location
                 double longitude = sc.nextDouble();
 
-                if (type.equalsIgnoreCase("Van") ||
-                    type.equalsIgnoreCase("Truck")) {
+                if (
+                    type.equalsIgnoreCase("Van") ||
+                    type.equalsIgnoreCase("Truck")
+                ) {
                     double loadSpace = sc.nextDouble();
                     vehicleList.add(new Van(id, type, make, model, milesPerKwH,
                             registration, costPerMile,
@@ -58,8 +46,10 @@ public class VehicleManager {
                             mileage, latitude, longitude,
                             loadSpace));
                 }
-                else if (type.equalsIgnoreCase("Car") ||
-                         type.equalsIgnoreCase("4x4")) {
+                else if (
+                    type.equalsIgnoreCase("Car") ||
+                    type.equalsIgnoreCase("4x4")
+                ) {
                     int seats = sc.nextInt();
                     vehicleList.add(new Car(id, type, make, model, milesPerKwH,
                             registration, costPerMile,
@@ -73,6 +63,20 @@ public class VehicleManager {
         } catch (IOException e) {
             System.out.println("Exception thrown. " + e);
         }
+    }
+
+    public void displayAllVehicles() {
+        for (Vehicle v : vehicleList)
+            System.out.println(v.toString());
+    }
+
+    public Vehicle findByRegistration(String registration) {
+        if (registration == null) return null;
+        Vehicle v = null;
+        for (Vehicle i : vehicleList)
+            if (i.getRegistration().equals(registration))
+                v = i;
+        return v;
     }
 
     //TODO add more functionality as per spec.
