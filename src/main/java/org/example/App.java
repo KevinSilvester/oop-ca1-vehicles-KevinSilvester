@@ -188,8 +188,7 @@ public class App {
                 System.out.println("\nInvalid input!\n");
         } while (!valid);
 
-        passengerStore.addPassenger(name, email, phone, Double.parseDouble(latitude), Double.parseDouble(longitude));
-        System.out.println("\nNew Passenger " + name + " added to the list");
+        System.out.println(passengerStore.addPassenger(name, email, phone, Double.parseDouble(latitude), Double.parseDouble(longitude)));
     }
 
     private void close() {

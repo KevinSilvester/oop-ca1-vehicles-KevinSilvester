@@ -45,10 +45,16 @@ public class PassengerStore {
         }
     }
 
-    public void addPassenger(String name, String email, String phone,
+    public String addPassenger(String name, String email, String phone,
                              double latitude, double longitude) {
-        Passenger newPassenger = new Passenger(name, email,phone, latitude, longitude);
+        for (Passenger p : this.passengerList) {
+            if (p.getName().toLowerCase().equals(name.toLowerCase()) &&
+                    p.getEmail().toLowerCase().equals(email.toLowerCase()))
+                return "\nPassenger " + name + " with email " + " is already stored";
+        }
+        Passenger newPassenger = new Passenger(name, email, phone, latitude, longitude);
         this.passengerList.add(newPassenger);
+        return "\nPassenger " + name + " with email " + email + " has been added";
     }
 
     public Passenger findPassengerByName(String query) {
