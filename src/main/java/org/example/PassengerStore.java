@@ -15,6 +15,26 @@ public class PassengerStore {
         loadPassengerDataFromFile(fileName);
     }
 
+    private void loadPassengerDataFromFile(String filename) {
+        try {
+            Scanner sc = new Scanner(new File(filename));
+            sc.useDelimiter("[,\r\n]+");
+            while (sc.hasNext()) {
+                int id = sc.nextInt();
+                String name = sc.next();
+                String email = sc.next();
+                String phone = sc.next();
+                double latitude = sc.nextDouble();
+                double longitude = sc.nextDouble();
+                passengerList.add(new Passenger(id, name, email, phone, latitude, longitude));
+            }
+            sc.close();
+        }
+        catch (IOException e) {
+            System.out.println("Exception thrown. " + e);
+        }
+    }
+
     public List<Passenger> getAllPassengers() {
         return this.passengerList;
     }
@@ -31,34 +51,12 @@ public class PassengerStore {
         this.passengerList.add(newPassenger);
     }
 
-    /**
-     * Read Passenger records from a text file and create and add Passenger
-     * objects to the PassengerStore.
-     */
-    private void loadPassengerDataFromFile(String filename) {
-
-        try {
-            Scanner sc = new Scanner(new File(filename));
-//           Delimiter: set the delimiter to be a comma character ","
-//                    or a carriage-return '\r', or a newline '\n'
-            sc.useDelimiter("[,\r\n]+");
-
-            while (sc.hasNext()) {
-                int id = sc.nextInt();
-                String name = sc.next();
-                String email = sc.next();
-                String phone = sc.next();
-                double latitude = sc.nextDouble();
-                double longitude = sc.nextDouble();
-
-                // construct a Passenger object and add it to the passenger list
-                passengerList.add(new Passenger(id, name, email, phone, latitude, longitude));
-            }
-            sc.close();
-
-        } catch (IOException e) {
-            System.out.println("Exception thrown. " + e);
+    public Passenger findPassengerByName(String query) {
+        for (Passenger p : this.passengerList) {
+            if (p.getName().toLowerCase().equals(query.trim().toLowerCase()))
+                return p;
         }
+        return null;
     }
 
     // TODO - see functional spec for details of code to add
