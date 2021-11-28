@@ -1,4 +1,4 @@
-package org.example;
+package org.project;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +54,7 @@ public class PassengerStore {
         }
         Passenger newPassenger = new Passenger(name, email, phone, latitude, longitude);
         this.passengerList.add(newPassenger);
-        return "\nPassenger " + name + " with email " + email + " has been added";
+        return "\nPassenger \"" + name + "\" with email \"" + email + "\" has been added";
     }
 
     public Passenger findPassengerByName(String query) {

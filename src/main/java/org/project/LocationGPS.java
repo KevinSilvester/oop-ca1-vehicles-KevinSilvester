@@ -1,4 +1,4 @@
-package org.example;
+package org.project;
 
 // Class that wraps the latitude and longitude of a location
 // into one object for convenience.

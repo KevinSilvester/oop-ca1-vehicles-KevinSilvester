@@ -1,4 +1,4 @@
-package org.example;
+package org.project;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,6 +77,13 @@ public class VehicleManager {
             if (i.getRegistration().equals(registration))
                 v = i;
         return v;
+    }
+
+    public ArrayList<Vehicle> filterVehicle(String query, FilterVehicles option) {
+        switch (option) {
+            case MAKE:
+        }
+        return vehicleList;
     }
 
     //TODO add more functionality as per spec.

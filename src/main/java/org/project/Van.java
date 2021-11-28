@@ -1,4 +1,4 @@
-package org.example;
+package org.project;
 
 // Van class to represent Vans and Trucks
 //
