@@ -332,6 +332,7 @@ public class App {
     }
 
     private void close() {
+        vehicleManager.save();
         System.out.println("Program exiting... Goodbye");
     }
 }

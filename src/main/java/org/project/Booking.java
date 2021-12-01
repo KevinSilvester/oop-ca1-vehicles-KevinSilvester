@@ -13,6 +13,5 @@ class Booking
 
     private double cost;  //Calculated at booking time
 
-    //TODO - see specification
 
 }
