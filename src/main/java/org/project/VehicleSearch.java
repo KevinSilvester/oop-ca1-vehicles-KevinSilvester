@@ -1,6 +1,6 @@
 package org.project;
 
-public enum FilterVehicles {
+public enum VehicleSearch {
     TYPE,
     SEATS,
     MAKE,

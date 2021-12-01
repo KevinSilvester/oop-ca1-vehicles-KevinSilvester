@@ -3,6 +3,7 @@ package org.project;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class VehicleManager {
@@ -79,11 +80,37 @@ public class VehicleManager {
         return v;
     }
 
-    public ArrayList<Vehicle> filterVehicle(String query, FilterVehicles option) {
-        switch (option) {
+    public ArrayList<Vehicle> searchVehicleList(VehicleSearch searchType, String searchQuery) {
+        ArrayList<Vehicle> res = new ArrayList<>();
+        VehicleComparator comparator = new VehicleComparator();
+
+        switch (searchType) {
+            case TYPE:
+                for (Vehicle v : this.vehicleList)
+                    if (v.getType().toLowerCase().equals(searchQuery.toLowerCase()))
+                        res.add(v);
+                break;
             case MAKE:
+                for (Vehicle v : this.vehicleList)
+                    if (v.getMake().toLowerCase().equals(searchQuery.toLowerCase()))
+                        res.add(v);
+                break;
+            case MODEL:
+                for (Vehicle v : this.vehicleList)
+                    if (v.getModel().toLowerCase().equals(searchQuery.toLowerCase()))
+                        res.add(v);
+                break;
+            case SEATS:
+                for (Vehicle v : this.vehicleList)
+                    if (v instanceof Car && ((Car) v).getSeats() == Integer.parseInt(searchQuery))
+                        res.add(v);
+                break;
+            default:
+                res = null;
+                break;
         }
-        return vehicleList;
+        Collections.sort(res, comparator);
+        return res;
     }
 
     //TODO add more functionality as per spec.

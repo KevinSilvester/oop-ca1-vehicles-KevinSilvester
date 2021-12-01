@@ -1,9 +1,10 @@
 package org.project;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Unit test for Vehicles App.
@@ -45,5 +46,12 @@ public class AppTest
         assertEquals(53.2543, car.getDepotGPSLocation().getLatitude(),0.00005);
         assertEquals(-6.4444, car.getDepotGPSLocation().getLongitude(),0.00005);
         assertEquals(5,car.getSeats(),0.05);
+    }
+
+    @Test
+    public void vehicleManagerSearch() {
+        VehicleSearch searchType = VehicleSearch.MODEL;
+        String searchQuery = "Fiat";
+//        ArrayList<Vehicle> exp = new ArrayList<>({})
     }
 }

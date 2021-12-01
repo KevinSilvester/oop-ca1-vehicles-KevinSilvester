@@ -31,7 +31,7 @@ public class Car extends Vehicle {
         this.seats = seats;
     }
 
-    public double getSeats() {
+    public int getSeats() {
         return seats;
     }
     public void setSeats(int seats) {

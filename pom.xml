@@ -14,16 +14,19 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>11</java.version>
-    <junit-jupiter.version>5.7.0</junit-jupiter.version>
+    <junit-jupiter.version>5.8.1</junit-jupiter.version>
   </properties>
 
   <dependencies>
+    <!-- JUnit 5.8.1 library -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>${junit-jupiter.version}</version>
       <scope>test</scope>
     </dependency>
+    <!-- Library for Tuples as JavaFX was removed from Java 11 SDK -->
+    <!-- https://mvnrepository.com/artifact/org.javatuples/javatuples/1.2 -->
     <dependency>
       <groupId>org.javatuples</groupId>
       <artifactId>javatuples</artifactId>

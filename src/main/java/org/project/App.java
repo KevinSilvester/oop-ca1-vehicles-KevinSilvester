@@ -1,11 +1,11 @@
 package org.project;
+
 import org.javatuples.Pair;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-
-
 
 /**
  * This Vehicle Bookings Management Systems manages the booking of Vehicles
@@ -196,7 +196,7 @@ public class App {
     private void vehicleSubmenu() {
         final String MENU_ITEMS = "\n*** VEHICLE MENU ***\n"
                 + "1. Show all Vehicles\n"
-                + "2. Find Vehicles by Name\n"
+                + "2. Find Vehicles by Registration\n"
                 + "3. Search Vehicles\n"
                 + "4. Exit\n"
                 + "Enter Option [1 - 4]";
@@ -230,11 +230,13 @@ public class App {
                         break;
                     case SEARCH:
                         System.out.println("Search for Vehicle(s)\n");
-
+                        searchVehicles();
+//                        Pair<VehicleSearch, String> searchValues = searchVehicles();
+//                        if (searchValues.getValue0() != null && searchValues.getValue1() != null)
+//                            vehicleManager.searchVehicleList(searchValues.getValue0(), searchValues.getValue1());
                         break;
                     case ADD:
                         System.out.println("Add New Vehicle\n");
-                        addNewPassenger();
                         break;
                     case EXIT:
                         System.out.println("Exit Menu option chosen");
@@ -250,10 +252,83 @@ public class App {
         } while (option != EXIT);
     }
 
-    private Pair<FilterVehicles, String> searchVehicles() {
-        FilterVehicles type = FilterVehicles.TYPE;
-        String query = "hello";
-        return new Pair<FilterVehicles,String>(type, query);
+    private void searchVehicles() {
+        final String MENU_ITEMS = "\n*** VEHICLE SEARCH MENU ***\n"
+                + "1. Search by Vehicle Type\n"
+                + "2. Search by Vehicle Make\n"
+                + "3. Search by Vehicle Model\n"
+                + "4. Search by Vehicle Seats\n"
+                + "5. Exit\n"
+                + "Enter Option [1, 5]";
+
+        final int SEARCH_TYPE   = 1;
+        final int SEARCH_MAKE   = 2;
+        final int SEARCH_MODEL  = 3;
+        final int SEARCH_SEATS  = 4;
+        final int EXIT          = 5;
+
+        VehicleSearch searchType = null;
+        String searchQuery = null;
+
+        int option = 0;
+        boolean valid = true;
+        do {
+            System.out.println("\n" + MENU_ITEMS);
+            try {
+                String usersInput = KB.nextLine();
+                option = Integer.parseInt(usersInput);
+                valid = true;
+                ArrayList<Vehicle> result;
+                switch (option) {
+                    case SEARCH_TYPE:
+                        System.out.println("Search by Vehicle Type");
+                        System.out.print("Enter a vehicle type: ");
+                        searchQuery = KB.nextLine();
+                        searchType = VehicleSearch.TYPE;
+                        break;
+                    case SEARCH_MAKE:
+                        System.out.println("Search by Vehicle Make");
+                        System.out.print("Enter a vehicle make: ");
+                        searchQuery = KB.nextLine();
+                        searchType = VehicleSearch.MAKE;
+                        break;
+                    case SEARCH_MODEL:
+                        System.out.println("Search by Vehicle Model");
+                        System.out.print("Enter a vehicle model: ");
+                        searchQuery = KB.nextLine();
+                        searchType = VehicleSearch.MODEL;
+                        break;
+                    case SEARCH_SEATS:
+                        System.out.println("Search by Vehicle Seats");
+                        System.out.print("Enter a vehicle seats: ");
+                        searchQuery = KB.nextLine();
+                        searchType = VehicleSearch.SEATS;
+                        break;
+                    case EXIT:
+                        System.out.println("Exit Menu option chosen");
+                        break;
+                    default:
+                        System.out.print("Invalid option - please enter number in range");
+                        valid = false;
+                        break;
+                }
+
+                if (searchQuery != null && searchType != null) {
+                    result = vehicleManager.searchVehicleList(searchType, searchQuery);
+
+                    if (result == null) {
+                        System.out.println("\nNo vehicles found");
+                    }
+                    else {
+                        System.out.println("\nSearch Results:");
+                        for (Vehicle v: result)
+                            System.out.println(v);
+                    }
+                }
+            } catch (InputMismatchException | NumberFormatException e) {
+                System.out.print("Invalid option - please enter number in range");
+            }
+        } while (option != EXIT || !valid);
     }
 
     private void close() {
