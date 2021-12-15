@@ -1,5 +1,7 @@
 package org.project;
 
+import java.util.Objects;
+
 public class Passenger {
     private int id;
     private String name;
@@ -26,6 +28,8 @@ public class Passenger {
         this.phone = phone;
         this.location = new LocationGPS(latitude, longitude);
     }
+
+
 
     // Version of constructor called when the passenger id is known,
     // as it was read from the "passengers.txt" file.
@@ -88,5 +92,18 @@ public class Passenger {
                 + "id=" + id + ", name=" + name + ", email="
                 + email + ", phone=" + phone + ", location="
                 + location + "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Passenger passenger = (Passenger) o;
+        return Objects.equals(getName(), passenger.getName()) && Objects.equals(getEmail(), passenger.getEmail());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getEmail());
     }
 }

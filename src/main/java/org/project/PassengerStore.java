@@ -45,6 +45,12 @@ public class PassengerStore {
         }
     }
 
+    public void displayPassengerIDs() {
+        for (Passenger p : this.passengerList) {
+            System.out.println(p.getId());
+        }
+    }
+
     public String addPassenger(String name, String email, String phone,
                              double latitude, double longitude) {
         for (Passenger p : this.passengerList) {
@@ -62,6 +68,14 @@ public class PassengerStore {
             if (p.getName().toLowerCase().equals(query.trim().toLowerCase()))
                 return p;
         }
+        return null;
+    }
+
+    public Passenger findPassengerById(int id) {
+        for (Passenger p : passengerList)
+            if (p.getId() == id) {
+                return p;
+            }
         return null;
     }
 

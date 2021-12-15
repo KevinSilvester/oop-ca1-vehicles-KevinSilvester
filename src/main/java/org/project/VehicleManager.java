@@ -83,6 +83,14 @@ public class VehicleManager {
         return v;
     }
 
+    public Vehicle findById(int id) {
+        Vehicle v = null;
+        for (Vehicle i : vehicleList)
+            if (i.getId() == id)
+                v = i;
+        return v;
+    }
+
     public ArrayList<Vehicle> searchVehicleList(VehicleSearch searchType, String searchQuery) {
         ArrayList<Vehicle> res = new ArrayList<>();
         VehicleComparator comparator = new VehicleComparator();
@@ -146,8 +154,7 @@ public class VehicleManager {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }finally{
-            //close resources
+        } finally {
             try {
                 fWriter.close();
             } catch (IOException e) {
