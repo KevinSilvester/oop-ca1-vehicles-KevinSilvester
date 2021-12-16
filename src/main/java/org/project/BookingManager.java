@@ -21,46 +21,6 @@ public class BookingManager
         this.vehicleManager = vehicleManager;
     }
 
-    public void loadBookingsFromFile(String fileName) {
-        try {
-            Scanner sc = new Scanner(new File(fileName));
-//           Delimiter: set the delimiter to be a comma character ","
-//                    or a carriage-return '\r', or a newline '\n'
-            sc.useDelimiter("[,\r\n]+");
-
-            while (sc.hasNext()) {
-                
-
-                if (
-                        type.equalsIgnoreCase("Van") ||
-                                type.equalsIgnoreCase("Truck")
-                ) {
-                    double loadSpace = sc.nextDouble();
-                    vehicleList.add(new Van(id, type, make, model, milesPerKwH,
-                            registration, costPerMile,
-                            year, month, day,
-                            mileage, latitude, longitude,
-                            loadSpace));
-                }
-                else if (
-                        type.equalsIgnoreCase("Car") ||
-                                type.equalsIgnoreCase("4x4")
-                ) {
-                    int seats = sc.nextInt();
-                    vehicleList.add(new Car(id, type, make, model, milesPerKwH,
-                            registration, costPerMile,
-                            year, month, day,
-                            mileage, latitude, longitude,
-                            seats));
-                }
-            }
-            sc.close();
-
-        } catch (IOException e) {
-            System.out.println("Exception thrown. " + e);
-        }
-    }
-
     public void addBooking(int passengerId, int vehicleId, LocalDateTime date, LocationGPS start, LocationGPS end) {
         if (this.checkIfAvailable(passengerId, vehicleId)) {
             System.out.println("");
