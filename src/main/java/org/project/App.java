@@ -2,6 +2,7 @@ package org.project;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -84,6 +85,7 @@ public class App {
                         break;
                     case BOOKINGS:
                         System.out.println("Bookings option chosen");
+                        bookingSubmenu();
                         break;
                     case EXIT:
                         System.out.println("Exit Menu option chosen");
@@ -581,8 +583,6 @@ public class App {
         final int DELETE        = 4;
         final int EXIT          = 5;
 
-        boolean valid = true;
-
         int option = 0;
         do {
             Passenger p = null;
@@ -603,7 +603,7 @@ public class App {
 
                     case ADD:
                         System.out.println("Add New Passenger\n");
-                        addNewPassenger();
+                        addNewBooking();
                         break;
 
                     case DELETE:
@@ -624,6 +624,11 @@ public class App {
                 System.out.print("Invalid option - please enter number in range");
             }
         } while (option != EXIT);
+    }
+
+    private void addNewBooking() {
+        Date date = new Date();
+        System.out.println(date.toString());
     }
 
     private void close() {
