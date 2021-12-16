@@ -1,6 +1,5 @@
 package org.project;
 
-import org.javatuples.Pair;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -29,6 +28,9 @@ public class App {
     private static VehicleManager vehicleManager;
     private static BookingManager bookingManager;
     private static final Scanner KB = new Scanner(System.in);
+    private static final Pattern PHONE_REGEX = Pattern.compile("^\\+?(\\d+-?)+$");
+    private static final Pattern DOUBLE_REGEX = Pattern.compile("^-?(\\d+)(?:\\.\\d+)?$");
+    private static final Pattern EMAIL_REGEX = Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", Pattern.CASE_INSENSITIVE);
 
     public static void main(String[] args) {
         App app = new App();
@@ -47,6 +49,9 @@ public class App {
             e.printStackTrace();
         }
     }
+
+    /* ------------------------------------------------------------------------------------------------------------------------------- */
+    /* ---------------------------------------------------------- MAIN MENU ---------------------------------------------------------- */
 
     private void displayMainMenu() throws IOException {
         final String MENU_ITEMS = "\n*** MAIN MENU OF OPTIONS ***\n"
@@ -96,21 +101,28 @@ public class App {
         System.out.println("\nExiting Main Menu, goodbye.");
     }
 
+
+    /* ------------------------------------------------------------------------------------------------------------------------------- */
+    /* ----------------------------------------------------- PASSENGER FUNCTIONS ----------------------------------------------------- */
+
     private void passengerSubmenu() throws IOException {
         final String MENU_ITEMS = "\n*** PASSENGER MENU ***\n"
                 + "1. Show all Passengers\n"
                 + "2. Find Passenger by id\n"
                 + "3. Find Passenger by Name\n"
                 + "4. Add new Passenger\n"
-                + "6. Exit\n"
-                + "Enter Option [1, 5]";
+                + "5. Edit Passenger\n"
+                + "6. Delete Passenger\n"
+                + "7. Exit\n"
+                + "Enter Option [1, 7]";
 
         final int SHOW_ALL      = 1;
         final int FIND_BY_ID    = 2;
         final int FIND_BY_NAME  = 3;
         final int ADD           = 4;
         final int EDIT          = 5;
-        final int EXIT          = 6;
+        final int DELETE        = 6;
+        final int EXIT          = 7;
 
         boolean valid = true;
 
@@ -129,36 +141,12 @@ public class App {
 
                     case FIND_BY_ID:
                         System.out.println("Find Passenger ID");
-                        String idStr;
-                        int id = 0;
-                        do {
-                            System.out.print("Enter passenger ID: ");
-                            idStr = KB.nextLine();
-                            try {
-                                id = Integer.parseInt(idStr);
-                                p = passengerStore.findPassengerById(id);
-                                valid = true;
-                            } catch (InputMismatchException | NumberFormatException e) {
-                                System.out.println("\nInvalid input!\n");
-                                valid = false;
-                            }
-                        } while (!valid);
-
-                        if(p==null)
-                            System.out.println("No passenger with the id \"" + id +"\"");
-                        else
-                            System.out.println("Found Passenger: \n" + p);
+                        findPassengerById();
                         break;
 
                     case FIND_BY_NAME:
                         System.out.println("Find Passenger by Name");
-                        System.out.println("Enter passenger name: ");
-                        String name = KB.nextLine();
-                        p = passengerStore.findPassengerByName(name);
-                        if(p==null)
-                            System.out.println("No passenger matching the name \"" + name +"\"");
-                        else
-                            System.out.println("Found passenger: \n" + p.toString());
+                        findPassengerByName();
                         break;
 
                     case ADD:
@@ -169,6 +157,11 @@ public class App {
                     case EDIT:
                         System.out.println("Edit Passenger\n");
                         editPassenger();
+                        break;
+
+                    case DELETE:
+                        System.out.println("Delete Passenger\n");
+                        deletePassenger();
                         break;
 
                     case EXIT:
@@ -186,6 +179,41 @@ public class App {
         } while (option != EXIT);
     }
 
+    private void findPassengerById() {
+        Passenger p = null;
+        String idStr = null;
+        boolean valid = true;
+        int id = 0;
+        do {
+            System.out.print("Enter passenger ID: ");
+            idStr = KB.nextLine();
+            try {
+                id = Integer.parseInt(idStr);
+                p = passengerStore.findPassengerById(id);
+                valid = true;
+            } catch (InputMismatchException | NumberFormatException e) {
+                System.out.println("\nInvalid input!\n");
+                valid = false;
+            }
+        } while (!valid);
+
+        if(p==null)
+            System.out.println("No passenger with the id \"" + id +"\"");
+        else
+            System.out.println("Found Passenger: \n" + p);
+    }
+
+    private void findPassengerByName() {
+        Passenger p = null;
+        System.out.println("Enter passenger name: ");
+        String name = KB.nextLine();
+        p = passengerStore.findPassengerByName(name);
+        if(p==null)
+            System.out.println("No passenger matching the name \"" + name +"\"");
+        else
+            System.out.println("Found passenger: \n" + p.toString());
+    }
+
     private void editPassenger() {
         final String MENU_ITEMS = "\n*** PASSENGER EDIT MENU ***\n"
                 + "1. Edit Name\n"
@@ -201,9 +229,7 @@ public class App {
         final int EDIT_LONGITUDE = 5;
         final int EXIT          = 6;
 
-        Pattern phoneRegex = Pattern.compile("^\\+?(\\d+-?)+$");
-        Pattern doubleRegex = Pattern.compile("^-?(\\d+)(?:\\.\\d+)?$");
-        Pattern emailRegex = Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", Pattern.CASE_INSENSITIVE);
+
         Passenger p = null;
         boolean valid = true;
         String idStr = null;
@@ -254,7 +280,7 @@ public class App {
                             do {
                                 System.out.print("Enter new email: ");
                                 String email = KB.nextLine();
-                                valid = emailRegex.matcher(email).find();
+                                valid = EMAIL_REGEX.matcher(email).find();
                                 if (!valid)
                                     System.out.println("\nInvalid input!\n");
                                 else {
@@ -269,7 +295,7 @@ public class App {
                             do {
                                 System.out.print("Enter new phone number: ");
                                 String phone = KB.nextLine();
-                                valid = phoneRegex.matcher(phone).find();
+                                valid = PHONE_REGEX.matcher(phone).find();
                                 if (!valid)
                                     System.out.println("\nInvalid input!\n");
                                 else {
@@ -285,7 +311,7 @@ public class App {
                             do {
                                 System.out.print("Enter new longitude [-180, 180]: ");
                                 String longitude = KB.nextLine();
-                                valid = doubleRegex.matcher(longitude).find() && (Double.parseDouble(longitude) >= -180 && Double.parseDouble(longitude) <= 180);
+                                valid = DOUBLE_REGEX.matcher(longitude).find() && (Double.parseDouble(longitude) >= -180 && Double.parseDouble(longitude) <= 180);
                                 if (!valid)
                                     System.out.println("\nInvalid input!\n");
                                 else {
@@ -300,7 +326,7 @@ public class App {
                             do {
                                 System.out.print("Enter new latitude [-90, 90]: ");
                                 String latitude = KB.nextLine();
-                                valid = doubleRegex.matcher(latitude).find() && (Double.parseDouble(latitude) >= -90 && Double.parseDouble(latitude) <= 90);
+                                valid = DOUBLE_REGEX.matcher(latitude).find() && (Double.parseDouble(latitude) >= -90 && Double.parseDouble(latitude) <= 90);
                                 if (!valid)
                                     System.out.println("\nInvalid input!\n");
                                 else {
@@ -323,12 +349,8 @@ public class App {
     }
 
     private void addNewPassenger() {
-        Pattern phoneRegex = Pattern.compile("^\\+?(\\d+-?)+$");
-        Pattern doubleRegex = Pattern.compile("^-?(\\d+)(?:\\.\\d+)?$");
-        Pattern emailRegex = Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", Pattern.CASE_INSENSITIVE);
         String name = "", email, phone, latitude, longitude;
         boolean valid = true;
-
         do {
             System.out.print("Enter name: ");
             name = KB.nextLine();
@@ -339,34 +361,68 @@ public class App {
         do {
             System.out.print("Enter email: ");
             email = KB.nextLine();
-            valid = emailRegex.matcher(email).find();
+            valid = EMAIL_REGEX.matcher(email).find();
             if (!valid)
                 System.out.println("\nInvalid input!\n");
         } while (!valid);
         do {
             System.out.print("Enter phone number: ");
             phone = KB.nextLine();
-            valid = phoneRegex.matcher(phone).find();
+            valid = PHONE_REGEX.matcher(phone).find();
             if (!valid)
                 System.out.println("\nInvalid input!\n");
         } while (!valid);
         do {
             System.out.print("Enter latitude [-90, 90]: ");
             latitude = KB.nextLine();
-            valid = doubleRegex.matcher(latitude).find() && (Double.parseDouble(latitude) >= -90 && Double.parseDouble(latitude) <= 90);
+            valid = DOUBLE_REGEX.matcher(latitude).find() && (Double.parseDouble(latitude) >= -90 && Double.parseDouble(latitude) <= 90);
             if (!valid)
                 System.out.println("\nInvalid input!\n");
         } while (!valid);
         do {
             System.out.print("Enter longitude [-180, 180]: ");
             longitude = KB.nextLine();
-            valid = doubleRegex.matcher(longitude).find() && (Double.parseDouble(longitude) >= -180 && Double.parseDouble(longitude) <= 180);
+            valid = DOUBLE_REGEX.matcher(longitude).find() && (Double.parseDouble(longitude) >= -180 && Double.parseDouble(longitude) <= 180);
             if (!valid)
                 System.out.println("\nInvalid input!\n");
         } while (!valid);
 
         System.out.println(passengerStore.addPassenger(name, email, phone, Double.parseDouble(latitude), Double.parseDouble(longitude)));
     }
+
+    private void deletePassenger() {
+        Passenger p = null;
+        boolean valid = true;
+        String idStr = null;
+        int id = 0;
+
+        System.out.println("Saved Passenger IDs: ");
+        passengerStore.displayPassengerIDs();
+        do {
+            System.out.print("Enter passenger ID: ");
+            idStr = KB.nextLine();
+            try {
+                id = Integer.parseInt(idStr);
+                p = passengerStore.findPassengerById(id);
+                System.out.println(p);
+                valid = true;
+            } catch (InputMismatchException | NumberFormatException e) {
+                System.out.println("\nInvalid input!\n");
+                valid = false;
+            }
+        } while (!valid);
+
+        if(p==null)
+            System.out.println("No passenger with the id \"" + id +"\"");
+        else {
+            passengerStore.deletePassenger(id);
+            System.out.println("Passenger deleted");
+        }
+    }
+
+
+    /* ------------------------------------------------------------------------------------------------------------------------------- */
+    /* ------------------------------------------------------ VEHICLE FUNCTIONS ------------------------------------------------------ */
 
     private void vehicleSubmenu() {
         final String MENU_ITEMS = "\n*** VEHICLE MENU ***\n"
@@ -507,8 +563,72 @@ public class App {
         } while (option != EXIT || !valid);
     }
 
+    /* ------------------------------------------------------------------------------------------------------------------------------- */
+    /* ------------------------------------------------------ BOOKING FUNCTIONS ------------------------------------------------------ */
+
+    private void bookingSubmenu() throws IOException {
+        final String MENU_ITEMS = "\n*** BOOKING MENU ***\n"
+                + "1. Show all Bookings\n"
+                + "2. Find Booking by id\n"
+                + "3. Add new Booking\n"
+                + "4. Delete Booking\n"
+                + "5. Exit\n"
+                + "Enter Option [1, 5]";
+
+        final int SHOW_ALL      = 1;
+        final int FIND_BY_ID    = 2;
+        final int ADD           = 3;
+        final int DELETE        = 4;
+        final int EXIT          = 5;
+
+        boolean valid = true;
+
+        int option = 0;
+        do {
+            Passenger p = null;
+            System.out.println("\n" + MENU_ITEMS);
+            try {
+                String usersInput = KB.nextLine();
+                option = Integer.parseInt(usersInput);
+                switch (option) {
+                    case SHOW_ALL:
+                        System.out.println("Display ALL Passengers");
+                        passengerStore.displayAllPassengers();
+                        break;
+
+                    case FIND_BY_ID:
+                        System.out.println("Find Passenger ID");
+                        findPassengerById();
+                        break;
+
+                    case ADD:
+                        System.out.println("Add New Passenger\n");
+                        addNewPassenger();
+                        break;
+
+                    case DELETE:
+                        System.out.println("Delete Passenger\n");
+                        deletePassenger();
+                        break;
+
+                    case EXIT:
+                        System.out.println("Exit Menu option chosen");
+                        break;
+
+                    default:
+                        System.out.print("Invalid option - please enter number in range");
+                        break;
+                }
+
+            } catch (InputMismatchException | NumberFormatException e) {
+                System.out.print("Invalid option - please enter number in range");
+            }
+        } while (option != EXIT);
+    }
+
     private void close() {
         vehicleManager.save();
+        passengerStore.save();
         System.out.println("Program exiting... Goodbye");
     }
 }

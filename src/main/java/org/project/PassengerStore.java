@@ -1,6 +1,7 @@
 package org.project;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +10,13 @@ import java.util.Scanner;
 public class PassengerStore {
 
     private final ArrayList<Passenger> passengerList;
+    private final String FILE_NAME;
 
     public PassengerStore(String fileName) {
         this.passengerList = new ArrayList<>();
+        this.FILE_NAME = fileName;
         loadPassengerDataFromFile(fileName);
+
     }
 
     private void loadPassengerDataFromFile(String filename) {
@@ -79,6 +83,40 @@ public class PassengerStore {
         return null;
     }
 
-    // TODO - see functional spec for details of code to add
+    public void deletePassenger(int id) {
+        for (Passenger p : passengerList)
+            if (p.getId() == id) {
+                passengerList.remove(p);
+                break;
+            }
+    }
+
+    public void save() {
+        File file = new File(this.FILE_NAME);
+        FileWriter fWriter = null;
+        try {
+            fWriter = new FileWriter(file);
+
+            for (Passenger p : this.passengerList) {
+                int id = p.getId();
+                String name = p.getName();
+                String email = p.getEmail();
+                String phone = p.getPhone();
+                double latitude = p.getLocation().getLatitude();  // Depot GPS location
+                double longitude = p.getLocation().getLongitude();
+
+                String info = id+","+name+","+email+","+phone+","+latitude+","+longitude+",";
+                fWriter.write(info+"\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 } // end class
