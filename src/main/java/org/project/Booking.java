@@ -16,6 +16,16 @@ class Booking
 
     private double cost;  //Calculated at booking time
 
+    public Booking(int passengerId, int vehicleId, LocalDateTime bookingDateTime,
+                   LocationGPS startLocation, LocationGPS endLocation) {
+        this.bookingId = idGenerator.getNextId();
+        this.passengerId = passengerId;
+        this.vehicleId = vehicleId;
+        this.bookingDateTime = bookingDateTime;
+        this.startLocation = startLocation;
+        this.endLocation = endLocation;
+    }
+
     public void setBookingId(int bookingId) {
         this.bookingId = bookingId;
     }

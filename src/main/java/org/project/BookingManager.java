@@ -21,15 +21,24 @@ public class BookingManager
         this.vehicleManager = vehicleManager;
     }
 
+    public void displayAllBookings() {
+        for (Booking b : this.bookingList)
+            System.out.println(b);
+    }
+
     public void addBooking(int passengerId, int vehicleId, LocalDateTime date, LocationGPS start, LocationGPS end) {
-        if (this.checkIfAvailable(passengerId, vehicleId)) {
-            System.out.println("");
+        if (this.checkIfAvailable(passengerId, vehicleId, date)) {
+            this.bookingList.add(new Booking(passengerId, vehicleId, date, start, end));
+            System.out.println("Booking added successfully");
+        }
+        else {
+            System.out.println("Booking was unsuccessful.\nTry booking for in a different time slot.");
         }
     }
 
-    public boolean checkIfAvailable(int passengerId, int vehicleId) {
+    public boolean checkIfAvailable(int passengerId, int vehicleId, LocalDateTime date) {
         for (Booking b: this.bookingList) {
-            if (b.getPassengerId() == passengerId && b.getVehicleId() == vehicleId)
+            if (b.getPassengerId() == passengerId && b.getVehicleId() == vehicleId && !b.getBookingDateTime().isAfter(date))
                 return false;
         }
         return true;

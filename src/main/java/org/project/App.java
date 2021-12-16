@@ -593,7 +593,7 @@ public class App {
                 switch (option) {
                     case SHOW_ALL:
                         System.out.println("Display ALL Passengers");
-                        passengerStore.displayAllPassengers();
+                        bookingManager.displayAllBookings();
                         break;
 
                     case FIND_BY_ID:
@@ -627,8 +627,54 @@ public class App {
     }
 
     private void addNewBooking() {
-        Date date = new Date();
-        System.out.println(date.toString());
+//        String vehicleID, passengerID, year, month, day, hour, minute, startLat, startLong, endLat, endLong;
+//        int vId = 0, pId = 0;
+//        boolean valid = true;
+//        do {
+//            System.out.print("Enter vehicle ID: ");
+//            vehicleID = KB.nextLine();
+//            try {
+//                vId = Integer.parseInt(vehicleID);
+//                valid = true;
+//            } catch (InputMismatchException | NumberFormatException e) {
+//                System.out.println("\nInvalid input!\n");
+//                valid = false;
+//            }
+//        } while (!valid);
+//        do {
+//            System.out.print("Enter passenger ID: ");
+//            passengerID = KB.nextLine();
+//            try {
+//                pId = Integer.parseInt(vehicleID);
+//                valid = true;
+//            } catch (InputMismatchException | NumberFormatException e) {
+//                System.out.println("\nInvalid input!\n");
+//                valid = false;
+//            }
+//        } while (!valid);
+//        do {
+//            System.out.print("Enter phone number: ");
+//            phone = KB.nextLine();
+//            valid = PHONE_REGEX.matcher(phone).find();
+//            if (!valid)
+//                System.out.println("\nInvalid input!\n");
+//        } while (!valid);
+//        do {
+//            System.out.print("Enter latitude [-90, 90]: ");
+//            latitude = KB.nextLine();
+//            valid = DOUBLE_REGEX.matcher(latitude).find() && (Double.parseDouble(latitude) >= -90 && Double.parseDouble(latitude) <= 90);
+//            if (!valid)
+//                System.out.println("\nInvalid input!\n");
+//        } while (!valid);
+//        do {
+//            System.out.print("Enter longitude [-180, 180]: ");
+//            longitude = KB.nextLine();
+//            valid = DOUBLE_REGEX.matcher(longitude).find() && (Double.parseDouble(longitude) >= -180 && Double.parseDouble(longitude) <= 180);
+//            if (!valid)
+//                System.out.println("\nInvalid input!\n");
+//        } while (!valid);
+//
+//        System.out.println(passengerStore.addPassenger(name, email, phone, Double.parseDouble(latitude), Double.parseDouble(longitude)));
     }
 
     private void close() {
